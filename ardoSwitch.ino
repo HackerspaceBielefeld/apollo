@@ -27,11 +27,8 @@ int dPin(mode,pin,val=false) {
 	//mode false getPin; true changePin
 	if(mode) {
 		if(isIn(dPinO,pin)){
-			//TODO
 			if(digitalWrite(pin,val)) {
 				return 2;
-			}else{
-				return 4;
 			}
 		}else{
 			return 3;
@@ -39,11 +36,9 @@ int dPin(mode,pin,val=false) {
 	}else{
 		if(isIn(dPinI,pin) || isIN(dPinO,pin)) {
 			return digitalRead(pin);
-		}else{
-			return 4;
 		}
 	}
-	
+	return 4;
 }
 
 //TODO
@@ -80,6 +75,7 @@ void loop() {
 	// auf anfrage Prüfen
 	EthernetClient client = server.available();
 	if (client) {
+		String req = "";
 		boolean currentLineIsBlank = true;
 		while (client.connected()) {
 			if (client.available()) {
@@ -110,10 +106,13 @@ void loop() {
 					break;
 				}
 				if (c == '\n') {
-					// you're starting a new line
+					// TODO hier zeile analysieren
+					client.println(req);
+					req = "";
 					currentLineIsBlank = true;
 				} else if (c != '\r') {
-					// you've gotten a character on the current line
+					// buchstabe sammeln
+					req.concat(c);
 					currentLineIsBlank = false;
 				}
 			}
