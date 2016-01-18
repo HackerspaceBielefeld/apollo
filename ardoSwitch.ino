@@ -119,7 +119,6 @@ void loop() {
 		}
 
 		delay(1);
-
 		// close the connection:
 		client.stop();
 	}
