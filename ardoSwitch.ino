@@ -2,8 +2,15 @@
 #include <SPI.h>
 
 byte mac[] = { 0x00 , 0xAA , 0xBB , 0xCC , 0xDE , 0x02 }; // macadresse
+int dPinO[] = {} //digitale Ausgänge
+int dPinI[] = {} //digitale Eingänge
+
+int aPinO[] = {} //analoge Ausgänge (PWM)
+int aPinI[] = {} //analoge Eingänge
 
 int maintain = 30; //checke renew alle x sekunden
+
+// --------------------------------------------------------------------------
 
 int m = 0;
 EthernetServer server(80);
@@ -29,35 +36,32 @@ void loop() {
 	// auf anfrage Prüfen
 	EthernetClient client = server.available();
 	if (client) {
-		//TODO
-		// an http request ends with a blank line
 		boolean currentLineIsBlank = true;
 		while (client.connected()) {
 			if (client.available()) {
 				char c = client.read();
-				Serial.write(c);
-				// if you've gotten to the end of the line (received a newline
-				// character) and the line is blank, the http request has ended,
-				// so you can send a reply
+				//TODO verstehen wie ich get var oder path lese
 				if (c == '\n' && currentLineIsBlank) {
-					// send a standard http response header
+					// standard antwort header
 					client.println("HTTP/1.1 200 OK");
 					client.println("Content-Type: text/html");
-					client.println("Connection: close");  // the connection will be closed after completion of the response
-					client.println("Refresh: 5");  // refresh the page automatically every 5 sec
+					client.println("Connection: close");
 					client.println();
-					client.println("<!DOCTYPE HTML>");
-					client.println("<html>");
-					// output the value of each analog input pin
-					for (int analogChannel = 0; analogChannel < 6; analogChannel++) {
-						int sensorReading = analogRead(analogChannel);
-						client.print("analog input ");
-						client.print(analogChannel);
-						client.print(" is ");
-						client.print(sensorReading);
-						client.println("<br />");
+					// content
+					
+					//TODO hier kommt die daten verarbeitung hin
+					// wert vorhanden dann ändere status und gib neuen status aus
+					// wert nicht vorhanden nur status angeben
+					if(true) { //TODO dv kontrollieren
+						// wert gändert
+						client.println("OK");
+					}else{
+						// wert nicht geändert, weil wert zb gleich
+						client.println("FAIL");
 					}
-					client.println("</html>");
+					
+					// content ende
+					client.println();
 					break;
 				}
 				if (c == '\n') {
@@ -75,7 +79,6 @@ void loop() {
 		// close the connection:
 		client.stop();
 	}
-	// TODO End
 
 	// etwas bremsen
 	delay(1000);
