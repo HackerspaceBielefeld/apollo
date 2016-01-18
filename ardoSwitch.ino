@@ -15,7 +15,51 @@ int maintain = 30; //checke renew alle x sekunden
 int m = 0;
 EthernetServer server(80);
 
+bool isIn(arr,needle) {
+	for(int i=0;i<sizeof(arr);i++) {
+		if(arr[i] == needle) return true;
+	}
+	return false;
+}
+
+int dPin(mode,pin,val=false) {
+	//return 0 pin = false; 1 pin = true; 2 chance succeded; 3 pin not listed; 4 error
+	//mode false getPin; true changePin
+	if(mode) {
+		if(isIn(dPinO,pin)){
+			//TODO
+			if(digitalWrite(pin,val)) {
+				return 2;
+			}else{
+				return 4;
+			}
+		}else{
+			return 3;
+		}
+	}else{
+		if(isIn(dPinI,pin) || isIN(dPinO,pin)) {
+			return digitalRead(pin);
+		}else{
+			return 4;
+		}
+	}
+	
+}
+
+//TODO
+int aPin() {
+	
+}
+
 void setup() {
+	// IOs definieren
+	for(int i = 0;i<sizeof(dPinI):i++) {
+		pinMode(dPinI[i],INPUT_PULLUP);
+	}
+	for(int i = 0;i<sizeof(dPinO):i++) {
+		pinMode(dPinO[i],OUTPUT);
+	}
+	
 	// dhcp holen
 	while(Ethernet.begin(mac) == 0) {
 		delay(1000);
@@ -48,7 +92,8 @@ void loop() {
 					client.println("Connection: close");
 					client.println();
 					// content
-					
+					int pin = ; //pin wird aus c errechnet
+					int val = ; //value die dem pin gegeben werden soll
 					//TODO hier kommt die daten verarbeitung hin
 					// wert vorhanden dann ändere status und gib neuen status aus
 					// wert nicht vorhanden nur status angeben
@@ -81,5 +126,5 @@ void loop() {
 	}
 
 	// etwas bremsen
-	delay(1000);
+	delay(999);
 }
