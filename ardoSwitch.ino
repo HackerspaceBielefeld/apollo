@@ -80,7 +80,6 @@ void loop() {
 		while (client.connected()) {
 			if (client.available()) {
 				char c = client.read();
-				//TODO verstehen wie ich get var oder path lese
 				if (c == '\n' && currentLineIsBlank) {
 					// standard antwort header
 					client.println("HTTP/1.1 200 OK");
@@ -93,7 +92,6 @@ void loop() {
 					break;
 				}
 				if (c == '\n') {
-					// TODO hier zeile analysieren
 					if(req.startwith("GET")){
 						int index = req.indexOf("/");
 						req = req.substring(index);
