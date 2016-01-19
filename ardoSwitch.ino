@@ -88,26 +88,33 @@ void loop() {
 					client.println("Connection: close");
 					client.println();
 					// content
-					int pin = ; //pin wird aus c errechnet
-					int val = ; //value die dem pin gegeben werden soll
-					//TODO hier kommt die daten verarbeitung hin
-					// wert vorhanden dann ändere status und gib neuen status aus
-					// wert nicht vorhanden nur status angeben
-					if(true) { //TODO dv kontrollieren
-						// wert gändert
-						client.println("OK");
-					}else{
-						// wert nicht geändert, weil wert zb gleich
-						client.println("FAIL");
-					}
-					
+					client.println(4);
 					// content ende
-					client.println();
 					break;
 				}
 				if (c == '\n') {
 					// TODO hier zeile analysieren
-					client.println(req);
+					if(req.startwith("GET")){
+						int index = req.indexOf("/");
+						req = req.substring(index);
+						index = req.indexOf("/");
+						if(index >= 0) {
+							pin = isInt(req.substring(0,index));
+							req = req.substring(index);
+							index = req.indexOf(" ");
+							if(index >= 0) {
+								val = req.substring(0,index);
+								client.println(dPin(true,pin,val));
+							}else{
+								client.println(dPin(false,pin));
+							}
+						}else{
+							index = req.indexOf(" ");
+							pin = toInt(req.substring(0,index));
+							client.println(dPin(false,pin));
+						}
+						break;
+					}
 					req = "";
 					currentLineIsBlank = true;
 				} else if (c != '\r') {
