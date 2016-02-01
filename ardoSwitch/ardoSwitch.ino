@@ -2,11 +2,11 @@
 #include <SPI.h>
 
 byte mac[] = { 0x00 , 0xAA , 0xBB , 0xCC , 0xDE , 0x02 }; // macadresse
-int dPinO[] = {} //digitale Ausgänge
-int dPinI[] = {} //digitale Eingänge
+int dPinO[] = {13}; //digitale Ausgänge
+int dPinI[] = {11}; //digitale Eingänge
 
-int aPinO[] = {} //analoge Ausgänge (PWM)
-int aPinI[] = {} //analoge Eingänge
+int aPinO[] = {}; //analoge Ausgänge (PWM)
+int aPinI[] = {}; //analoge Eingänge
 
 int maintain = 30; //checke renew alle x sekunden
 
@@ -15,26 +15,25 @@ int maintain = 30; //checke renew alle x sekunden
 int m = 0;
 EthernetServer server(80);
 
-bool isIn(arr,needle) {
+bool isIn(int arr[],int needle) {
 	for(int i=0;i<sizeof(arr);i++) {
 		if(arr[i] == needle) return true;
 	}
 	return false;
 }
 
-int dPin(mode,pin,val=false) {
+int dPin(bool mode,int pin,bool val=false) {
 	//return 0 pin = false; 1 pin = true; 2 chance succeded; 3 pin not listed; 4 error
 	//mode false getPin; true changePin
 	if(mode) {
 		if(isIn(dPinO,pin)){
-			if(digitalWrite(pin,val)) {
-				return 2;
-			}
+			digitalWrite(pin,val);
+			return 2;
 		}else{
 			return 3;
 		}
 	}else{
-		if(isIn(dPinI,pin) || isIN(dPinO,pin)) {
+		if(isIn(dPinI,pin) || isIn(dPinO,pin)) {
 			return digitalRead(pin);
 		}
 	}
@@ -48,10 +47,10 @@ int aPin() {
 
 void setup() {
 	// IOs definieren
-	for(int i = 0;i<sizeof(dPinI):i++) {
+	for(int i = 0;i<sizeof(dPinI);i++) {
 		pinMode(dPinI[i],INPUT_PULLUP);
 	}
-	for(int i = 0;i<sizeof(dPinO):i++) {
+	for(int i = 0;i<sizeof(dPinO);i++) {
 		pinMode(dPinO[i],OUTPUT);
 	}
 	
@@ -92,23 +91,23 @@ void loop() {
 					break;
 				}
 				if (c == '\n') {
-					if(req.startwith("GET")){
+					if(req.substring(0,3) == "GET"){
 						int index = req.indexOf("/");
 						req = req.substring(index);
 						index = req.indexOf("/");
 						if(index >= 0) {
-							pin = isInt(req.substring(0,index));
+							int pin = req.substring(0,index).toInt();
 							req = req.substring(index);
 							index = req.indexOf(" ");
 							if(index >= 0) {
-								val = req.substring(0,index);
+								String val = req.substring(0,index);
 								client.println(dPin(true,pin,val));
 							}else{
 								client.println(dPin(false,pin));
 							}
 						}else{
 							index = req.indexOf(" ");
-							pin = toInt(req.substring(0,index));
+							int pin = req.substring(0,index).toInt();
 							client.println(dPin(false,pin));
 						}
 						break;
