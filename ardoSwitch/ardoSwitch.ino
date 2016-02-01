@@ -28,12 +28,20 @@ int dPin(bool mode,int pin,bool val=false) {
 	if(mode) {
 		if(isIn(dPinO,pin)){
 			digitalWrite(pin,val);
+      Serial.print(pin);
+      Serial.print(" auf ");
+      Serial.print(val);
+      Serial.println(" schalten.");
 			return 2;
 		}else{
+      Serial.print(pin);
+      Serial.println(" Nicht in der Liste.");
 			return 3;
 		}
 	}else{
 		if(isIn(dPinI,pin) || isIn(dPinO,pin)) {
+      Serial.print(pin);
+      Serial.println(" wird abgefragt.");
 			return digitalRead(pin);
 		}
 	}
@@ -45,19 +53,42 @@ int aPin() {
 	
 }
 
+void printIPAddress() {
+  Serial.print("IP: ");
+  for (byte thisByte = 0; thisByte < 4; thisByte++) {
+    // print the value of each byte of the IP address:
+    Serial.print(Ethernet.localIP()[thisByte], DEC);
+    Serial.print(".");
+  }
+  Serial.println("");
+}
+
 void setup() {
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+  Serial.println("Apollo start ...");
+  
 	// IOs definieren
 	for(int i = 0;i<sizeof(dPinI);i++) {
 		pinMode(dPinI[i],INPUT_PULLUP);
+    Serial.print(dPinI[i]);
+    Serial.println(" wird als Eingang definiert.");
 	}
 	for(int i = 0;i<sizeof(dPinO);i++) {
 		pinMode(dPinO[i],OUTPUT);
+    Serial.print(dPinO[i]);
+    Serial.println(" wird als Ausgang definiert.");
 	}
 	
 	// dhcp holen
+ 
+  Serial.println("DHCP anfrage.");
 	while(Ethernet.begin(mac) == 0) {
 		delay(1000);
 	}
+  printIPAddress();
 	// server starten
 	server.begin();
 }
@@ -93,21 +124,26 @@ void loop() {
 				if (c == '\n') {
 					if(req.substring(0,3) == "GET"){
 						int index = req.indexOf("/");
-						req = req.substring(index);
+						req = req.substring(index+1);
 						index = req.indexOf("/");
-						if(index >= 0) {
+            int index2 = req.indexOf(" ");
+						if(index < index2) {
 							int pin = req.substring(0,index).toInt();
 							req = req.substring(index);
+              Serial.println(req);
 							index = req.indexOf(" ");
 							if(index >= 0) {
-								String val = req.substring(0,index);
+                Serial.print("ind: ");
+                Serial.println(index);
+								int val = req.substring(1,index).toInt();
+                Serial.print("Val: ");
+                Serial.println(val);
 								client.println(dPin(true,pin,val));
 							}else{
 								client.println(dPin(false,pin));
 							}
 						}else{
-							index = req.indexOf(" ");
-							int pin = req.substring(0,index).toInt();
+							int pin = req.substring(0,index2).toInt();
 							client.println(dPin(false,pin));
 						}
 						break;
