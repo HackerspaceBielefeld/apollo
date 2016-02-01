@@ -214,9 +214,22 @@ void loop() {
               
             }else{
               // kanal auslesen
-              Serial.println(req.substring(0,index2));
+              if(isIn(dPinO,pin)) { 
+                client.println(3);
+                break;
+                // nicht listed
+              }
               pin = req.substring(0,index2).toInt();
-              index = index2;
+              if(digitalRead(pin) == HIGH) {
+                client.println(1);
+                Serial.print(pin);
+                Serial.println(" gelesen als HIGH.");
+              }else{
+                client.println(0);
+                Serial.print(pin);
+                Serial.println(" gelesen als LOW.");
+              
+              }
             }
             Serial.print("Pin: ");
             Serial.println(pin);
