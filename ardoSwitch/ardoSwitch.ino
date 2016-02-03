@@ -2,11 +2,8 @@
 #include <SPI.h>
 
 byte mac[] = { 0x00 , 0x00 , 0x00 , 0x82 , 0xB1 , 0x73 }; // macadresse
-int dPinO[] = {2,3,4,5,6,7,8,9,10,11,12,13}; //digitale Ausgänge
-int dPinI[] = {}; //digitale Eingänge
-
-int aPinO[] = {}; //analoge Ausgänge (PWM)
-int aPinI[] = {}; //analoge Eingänge
+int dPinO[] = {3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18}; //digitale Ausgänge
+int dPinI[] = {19}; //digitale Eingänge
 
 int maintain = 30; //checke renew alle x sekunden
 
@@ -46,11 +43,6 @@ int dPin(bool mode,int pin,int val=false) {
     }
   }
   return 4;
-}
-
-//TODO
-int aPin() {
-  
 }
 
 void printIPAddress() {
