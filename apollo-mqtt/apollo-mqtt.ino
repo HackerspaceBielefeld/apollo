@@ -8,15 +8,16 @@ byte mac[] = { 0x00 , 0x00 , 0x00 , 0x82 , 0xB1 , 0x73 }; // macadresse
 
 int maintain = 30; //checke renew alle x sekunden
 String devName = "apollo";
-String topicDebug "debug/apollo";
+String topicDebug = "debug/apollo";
+String topicInput[] = {"apollo/?","light/schankraum/?"}
 
 // --------------------------------------------------------------------------
 
 int m = 0;
-Adafruit_MCP23017 mcp; //port extender
 
+Adafruit_MCP23017 mcp; //port extender
 EthernetClient ethClient;
-PubSubClient client(ethClient);
+PubSubClient mqtt(ethClient);
 
 bool isIn(int arr[],int needle) {
 	for(int i=0;i<sizeof(arr);i++) {
@@ -26,8 +27,6 @@ bool isIn(int arr[],int needle) {
 }
 
 int dPin(bool mode,int pin,int val=false) {
-	//return 0 pin = false; 1 pin = true; 2 chance succeded; 3 pin not listed; 4 error
-	//mode false getPin; true changePin
 	if(mode) {
 		if(isIn(dPinO,pin)){
 			mcp.digitalWrite(pin,val);
@@ -52,6 +51,7 @@ int dPin(bool mode,int pin,int val=false) {
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
+	// TODO
 	Serial.print("Message arrived [");
 	Serial.print(topic);
 	Serial.print("] ");
@@ -85,48 +85,37 @@ void printIPAddress() {
 	Serial.println("");
 }
 
+//verbindet mqtt neu zum broker
+//ungetestet
 void reconnect() {
-	// Loop until we're reconnected
 	while (!client.connected()) {
 		Serial.print("Attempting MQTT connection...");
-		// Attempt to connect
 		if (client.connect("arduinoClient")) {
 			Serial.println("connected");
-			// Once connected, publish an announcement...
-			client.publish("outTopic","hello world");
-			// ... and resubscribe
+			client.publish(topicDebug,"reconnected");
 			client.subscribe("inTopic");
 		} else {
 			Serial.print("failed, rc=");
 			Serial.print(client.state());
 			Serial.println(" try again in 5 seconds");
-			// Wait 5 seconds before retrying
+			client.publish(topicDebug,"connection lost");
 			delay(5000);
 		}
 	}
 }
 
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(9600); // Serial starten
 	while (!Serial) {
-		; // wait for serial port to connect. Needed for native USB port only
+		;
 	}
 	Serial.println("Apollo start ...");
 	
-	client.setServer(server, 1883);
-	client.setCallback(callback);
+	mqtt.setServer(server, 1883); //mqtt starten
+	mqtt.setCallback(callback);
 	delay(1500);
 
-	mcp.begin();
-
-	for(int j = 0;j<sizeof(pinsO);j++) {
-		mcp.pinMode(pins[j],OUTPUT);
-		mcp.digitalWrite(pinO[j],statO[j]);
-		Serial.print(pinsO[j]);
-		Serial.print(" wird als Ausgang ");
-		Serial.print(statO[j]);
-		Serial.println(" definiert.");
-	}
+	mcp.begin(); // port extender starten
 
 	// dhcp holen
 	Serial.println("DHCP anfrage.");
@@ -134,8 +123,6 @@ void setup() {
 		delay(1000);
 	}
 	printIPAddress();
-	// server starten
-	server.begin();
 }
 
 void loop() {
@@ -146,4 +133,9 @@ void loop() {
 		Ethernet.maintain();
 		m = 0;
 	}
+
+	if (!mqtt.connected()) {
+		reconnect();
+	}
+	mqtt.loop();
 }
