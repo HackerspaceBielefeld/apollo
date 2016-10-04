@@ -19,14 +19,16 @@ Adafruit_MCP23017 mcp; //port extender
 EthernetClient ethClient;
 PubSubClient mqtt(ethClient);
 
-void callback(char* topic, byte* payload, unsigned int length) {
+void callback(char* topic, byte* pl, unsigned int length) {
+	char payload[length];
+	for (int i=0;i<length;i++) {
+		Serial.print((char)payload[i]);
+	}
 	// TODO
 	Serial.print("Message arrived [");
 	Serial.print(topic);
 	Serial.print("] ");
-	for (int i=0;i<length;i++) {
-		Serial.print((char)payload[i]);
-	}
+	
 	Serial.println();
 }
 
