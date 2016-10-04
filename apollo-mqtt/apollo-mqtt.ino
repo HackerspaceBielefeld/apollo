@@ -19,37 +19,6 @@ Adafruit_MCP23017 mcp; //port extender
 EthernetClient ethClient;
 PubSubClient mqtt(ethClient);
 
-bool isIn(int arr[],int needle) {
-	for(int i=0;i<sizeof(arr);i++) {
-		if(arr[i] == needle) return true;
-	}
-	return false;
-}
-
-int dPin(bool mode,int pin,int val=false) {
-	if(mode) {
-		if(isIn(dPinO,pin)){
-			mcp.digitalWrite(pin,val);
-			Serial.print(pin);
-			Serial.print(" auf ");
-			Serial.print(val);
-			Serial.println(" schalten.");
-			return 2;
-		}else{
-			Serial.print(pin);
-			Serial.println(" Nicht in der Liste.");
-			return 3;
-		}
-	}else{
-		if(isIn(dPinI,pin) || isIn(dPinO,pin)) {
-			Serial.print(pin);
-			Serial.println(" wird abgefragt.");
-			return mcp.digitalRead(pin);
-		}
-	}
-	return 4;
-}
-
 void callback(char* topic, byte* payload, unsigned int length) {
 	// TODO
 	Serial.print("Message arrived [");
