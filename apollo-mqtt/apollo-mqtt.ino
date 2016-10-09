@@ -30,6 +30,7 @@ void callback(char* topic, byte* pl, unsigned int length) {
 	for (int i=0;i<length;i++) {
     payload[i] = (char)pl[i];  
 	}
+	payload[length] ="\0";
   Serial.print(payload);
 
   if(topic == "apollo/0") {
