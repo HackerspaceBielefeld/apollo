@@ -32,6 +32,7 @@ PubSubClient mqtt;
 
 void callback(char* topic, byte* pl, unsigned int length) {
 	char payload[length];
+  uint8_t id = 0;
 	for (int i=0;i<length;i++) {
 		payload[i] = (char)pl[i];  
 	}
@@ -42,133 +43,245 @@ void callback(char* topic, byte* pl, unsigned int length) {
 		vWireSendStr(payload,length);
 	}
 
-	if(topic == "apollo/0") {
-		if(payload == "ON") {
-			mcp.digitalWrite(0, HIGH);
-		}else{
-			mcp.digitalWrite(0, LOW);
-		}
-	}
+ if(topic == "apollo/0") {
+    id = 0;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/1") {
-		if(payload == "ON") {
-			mcp.digitalWrite(1, HIGH);
-		}else{
-			mcp.digitalWrite(1, LOW);
-		}
-	}
+ if(topic == "apollo/1") {
+    id = 1;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/2") {
-		if(payload == "ON") {
-			mcp.digitalWrite(2, HIGH);
-		}else{
-			mcp.digitalWrite(2, LOW);
-		}
-	}
+ if(topic == "apollo/2") {
+    id = 2;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/3") {
-		if(payload == "ON") {
-			mcp.digitalWrite(3, HIGH);
-		}else{
-			mcp.digitalWrite(3, LOW);
-		}
-	}
-	
-	if(topic == "apollo/4") {
-		if(payload == "ON") {
-			mcp.digitalWrite(4, HIGH);
-		}else{
-			mcp.digitalWrite(4, LOW);
-		}
-	}
+ if(topic == "apollo/3") {
+    id = 3;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/5") {
-		if(payload == "ON") {
-			mcp.digitalWrite(5, HIGH);
-		}else{
-			mcp.digitalWrite(5, LOW);
-		}
-	}
+ if(topic == "apollo/4") {
+    id = 4;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/6") {
-		if(payload == "ON") {
-			mcp.digitalWrite(6, HIGH);
-		}else{
-			mcp.digitalWrite(6, LOW);
-		}
-	}
+ if(topic == "apollo/5") {
+    id = 5;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/7") {
-		if(payload == "ON") {
-			mcp.digitalWrite(7, HIGH);
-		}else{
-			mcp.digitalWrite(7, LOW);
-		}
-	}
+ if(topic == "apollo/6") {
+    id = 6;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/8") {
-		if(payload == "ON") {
-			mcp.digitalWrite(8, HIGH);
-		}else{
-			mcp.digitalWrite(8, LOW);
-		}
-	}
+ if(topic == "apollo/7") {
+    id = 7;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/9") {
-		if(payload == "ON") {
-			mcp.digitalWrite(9, HIGH);
-		}else{
-			mcp.digitalWrite(9, LOW);
-		}
-	}
+ if(topic == "apollo/8") {
+    id = 8;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/10") {
-		if(payload == "ON") {
-			mcp.digitalWrite(10, HIGH);
-		}else{
-			mcp.digitalWrite(10, LOW);
-		}
-	}
+ if(topic == "apollo/9") {
+    id = 9;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/11") {
-		if(payload == "ON") {
-			mcp.digitalWrite(11, HIGH);
-		}else{
-			mcp.digitalWrite(11, LOW);
-		}
-	}
+ if(topic == "apollo/10") {
+    id = 10;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/12") {
-		if(payload == "ON") {
-			mcp.digitalWrite(12, HIGH);
-		}else{
-			mcp.digitalWrite(12, LOW);
-		}
-	}
+ if(topic == "apollo/11") {
+    id = 11;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/13") {
-		if(payload == "ON") {
-			mcp.digitalWrite(13, HIGH);
-		}else{
-			mcp.digitalWrite(13, LOW);
-		}
-	}
+ if(topic == "apollo/12") {
+    id = 12;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/14") {
-		if(payload == "ON") {
-			mcp.digitalWrite(14, HIGH);
-		}else{
-			mcp.digitalWrite(14, LOW);
-		}
-	}
+ if(topic == "apollo/13") {
+    id = 13;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
 
-	if(topic == "apollo/15") {
-		if(payload == "ON") {
-			mcp.digitalWrite(15, HIGH);
-		}else{
-			mcp.digitalWrite(15, LOW);
-		}
-	}
+ if(topic == "apollo/14") {
+    id = 14;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
+
+ if(topic == "apollo/15") {
+    id = 15;
+    if(payload == "TOGGLE") {
+      if(mcp.digitalRead(id) == HIGH) {
+        mcp.digitalWrite(id,LOW);
+      }else{
+        mcp.digitalWrite(id,HIGH);
+      }
+    }else if(payload == "ON") {
+      mcp.digitalWrite(id, HIGH);
+    }else{
+      mcp.digitalWrite(id, LOW);
+    }
+  }
   
 	Serial.print("Message arrived [");
 	Serial.print(topic);
