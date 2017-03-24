@@ -3,7 +3,7 @@
 #include <Wire.h>
 #include <Adafruit_MCP23017.h>
 #include <PubSubClient.h>
-#include <VirtualWire.h>
+#include "VirtualWire.h"
 #include <string.h>
 
 byte mac[] = { 0x00 , 0x00 , 0x00 , 0x82 , 0xB1 , 0x73 }; // macadresse
@@ -17,7 +17,7 @@ char* topicDebug = "debug/apollo";
 int topicCount = 1;
 char* topicInput[] = {"apollo/?"};
 
-int pin446 = 11;
+int pin433 = 11;
 
 
 
@@ -337,14 +337,14 @@ void reconnect() {
 }
 
 void vWireInit() {
-    vw_set_tx_pin(transmit_pin);
+    vw_set_tx_pin(433);
     vw_setup(2000);       // Bits per sec
 }
 
 void vWireSendStr(char* msg,int length) {
 	vw_send((uint8_t *)msg, length);
 	vw_wait_tx(); // Wait until the whole message is gone
-	delay(1000)
+	delay(1000);
 }
 
 void setup() {
