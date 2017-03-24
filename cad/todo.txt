@@ -1,7 +1,0 @@
-kritisch
-  arduino hinhängen
-  kabel fertig machen
-  
-normal
-  überbrücker stecker
-  platinen unterlage fertig machen
